@@ -13,4 +13,4 @@ export const config: Knex.Config = {
   },
 }
 
-export const knexConnection = knex(config)
+export const db = knex(config)
