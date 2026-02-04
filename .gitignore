@@ -13,6 +13,8 @@ build/
 # Banco de Dados local (SQLite)
 db/*.sqlite
 db/*.sqlite-journal
+db/*
+!db/migrations/
 
 # Logs e Cache
 npm-debug.log*

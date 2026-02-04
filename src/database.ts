@@ -1,4 +1,4 @@
-import knex from 'knex' // Importação direta sem chaves {}
+import knex from 'knex'
 import type { Knex } from 'knex'
 
 export const config: Knex.Config = {
