@@ -7,7 +7,9 @@ import { z } from 'zod'
 export async function mealsRoutes(app: FastifyInstance) {
   app.post(
     '/meals',
-    { preHandler: [checkUserId] },
+    { 
+      preHandler: [checkUserId]
+    },
     async (request, reply) => {
       const userId = request.cookies.userId
 
@@ -34,7 +36,9 @@ export async function mealsRoutes(app: FastifyInstance) {
 
   app.get(
     '/meals',
-    { preHandler: [checkUserId] },
+    { 
+      preHandler: [checkUserId]
+    },
     async (request) => {
         const userId = request.cookies.userId
 
@@ -48,7 +52,9 @@ export async function mealsRoutes(app: FastifyInstance) {
 
   app.get(
     '/meals/:id',
-    { preHandler: [checkUserId] },
+    { 
+      preHandler: [checkUserId]
+    },
     async (request, reply) => {
         const getMealParamsSchema = z.object({
         id: z.string().uuid(),
@@ -73,11 +79,13 @@ export async function mealsRoutes(app: FastifyInstance) {
 
         return { meal }
     },
-)
+  )
 
   app.put(
     '/meals/:id',
-    { preHandler: [checkUserId] },
+    { 
+      preHandler: [checkUserId]
+    },
     async (request, reply) => {
       const paramsSchema = z.object({
         id: z.string().uuid(),
@@ -123,11 +131,13 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       return reply.status(204).send()
     },
-)
+  )
 
   app.delete(
     '/meals/:id',
-    { preHandler: [checkUserId] },
+    { 
+      preHandler: [checkUserId]
+    },
     async (request, reply) => {
       const paramsSchema = z.object({
         id: z.string().uuid(),
@@ -160,5 +170,44 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
+  app.get(
+    '/meals/metrics',
+    { 
+      preHandler: [checkUserId]
+    },
+    async (request) => {
+      const userId = request.cookies.userId
 
+      const meals = await db('meals')
+        .where('user_id', userId)
+        .orderBy('meal_date_time', 'asc')
+
+      let bestSequence = 0
+      let currentSequence = 0
+
+      for (const meal of meals) {
+        if (meal.is_on_diet) {
+          currentSequence++
+          if (currentSequence > bestSequence) {
+            bestSequence = currentSequence
+          }
+        } else {
+          currentSequence = 0
+        }
+      }
+
+      const totalMeals = meals.length
+      const mealsOnDiet = meals.filter(
+        (meal) => meal.is_on_diet,
+      ).length
+      const mealsOffDiet = totalMeals - mealsOnDiet
+
+      return {
+        totalMeals,
+        mealsOnDiet,
+        mealsOffDiet,
+        bestSequence,
+      }
+    },
+  )
 }
