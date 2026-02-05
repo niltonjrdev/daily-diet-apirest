@@ -2,7 +2,6 @@ import type { FastifyInstance } from 'fastify'
 import { randomUUID } from 'crypto'
 import { db } from '../database'
 import { checkUserId } from '../middlewares/check-user-id'
-import { request } from 'http'
 import { z } from 'zod'
 
 export async function mealsRoutes(app: FastifyInstance) {
@@ -121,6 +120,41 @@ export async function mealsRoutes(app: FastifyInstance) {
           meal_date_time,
           is_on_diet,
         })
+
+      return reply.status(204).send()
+    },
+)
+
+  app.delete(
+    '/meals/:id',
+    { preHandler: [checkUserId] },
+    async (request, reply) => {
+      const paramsSchema = z.object({
+        id: z.string().uuid(),
+      })
+
+      const { id } = paramsSchema.parse(request.params)
+      const userId = request.cookies.userId
+
+      const meal = await db('meals')
+        .where({
+          id,
+          user_id: userId,
+        })
+        .first()
+
+      if (!meal) {
+        return reply.status(404).send({
+          error: 'Meal not found',
+        })
+      }
+
+      await db('meals')
+        .where({
+          id,
+          user_id: userId,
+        })
+        .delete()
 
       return reply.status(204).send()
     },
