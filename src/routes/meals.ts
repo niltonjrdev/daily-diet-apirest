@@ -5,6 +5,8 @@ import { checkUserId } from '../middlewares/check-user-id'
 import { z } from 'zod'
 
 export async function mealsRoutes(app: FastifyInstance) {
+
+  // Deve ser possível registrar uma refeição feita = Ok
   app.post(
     '/meals',
     { 
@@ -34,6 +36,7 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
+  // Deve ser possível listar todas as refeições de um usuário = Ok
   app.get(
     '/meals',
     { 
@@ -43,13 +46,15 @@ export async function mealsRoutes(app: FastifyInstance) {
         const userId = request.cookies.userId
 
         const meals = await db('meals')
-        .where('user_id', userId)
+        .where('user_id', userId) // O usuário só pode visualizar, editar e apagar as refeições o qual ele criou = ok (Presente em todas as rotas)
         .select('*')
 
         return { meals }
     },
   )
 
+
+  // Deve ser possível visualizar uma única refeição
   app.get(
     '/meals/:id',
     { 
@@ -65,10 +70,7 @@ export async function mealsRoutes(app: FastifyInstance) {
         const userId = request.cookies.userId
 
         const meal = await db('meals')
-        .where({
-            id,
-            user_id: userId,
-        })
+        .where({id, user_id: userId})
         .first()
 
         if (!meal) {
@@ -81,6 +83,7 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
+  // Deve ser possível editar uma refeição, podendo alterar todos os dados = Ok
   app.put(
     '/meals/:id',
     { 
@@ -133,6 +136,7 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
+  // Deve ser possível apagar uma refeição = Ok
   app.delete(
     '/meals/:id',
     { 
@@ -170,6 +174,7 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
+  // Deve ser possível recuperar as métricas de um usuário = Ok
   app.get(
     '/meals/metrics',
     { 

@@ -1,3 +1,5 @@
+//Deve ser possível criar um usuário = Ok
+
 import type { FastifyInstance } from 'fastify'
 import { randomUUID } from 'crypto'
 import { db } from '../database'
@@ -9,7 +11,7 @@ export async function usersRoutes(app: FastifyInstance) {
 
     await db('users').insert({
       id: userId,
-      name: 'Usuário padrão',
+      name: 'Default user',
     })
 
     reply
