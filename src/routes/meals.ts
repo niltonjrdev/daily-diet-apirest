@@ -9,19 +9,19 @@ export async function mealsRoutes(app: FastifyInstance) {
   // Deve ser possível registrar uma refeição feita = Ok
   app.post(
     '/meals',
-    { 
-      preHandler: [checkUserId]
-    },
+    { preHandler: [checkUserId] },
     async (request, reply) => {
-      const userId = request.cookies.userId
+      const bodySchema = z.object({
+        name: z.string().min(1),
+        description: z.string().min(1),
+        meal_date_time: z.string(),
+        is_on_diet: z.boolean(),
+      })
 
       const { name, description, meal_date_time, is_on_diet } =
-        request.body as {
-          name: string
-          description: string
-          meal_date_time: string
-          is_on_diet: boolean
-        }
+        bodySchema.parse(request.body)
+
+      const userId = request.cookies.userId
 
       await db('meals').insert({
         id: randomUUID(),
@@ -95,8 +95,8 @@ export async function mealsRoutes(app: FastifyInstance) {
       })
 
       const bodySchema = z.object({
-        name: z.string(),
-        description: z.string(),
+        name: z.string().min(1), 
+        description: z.string().min(1),   
         meal_date_time: z.string(),
         is_on_diet: z.boolean(),
       })
@@ -107,20 +107,7 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const userId = request.cookies.userId
 
-      const meal = await db('meals')
-        .where({
-          id,
-          user_id: userId,
-        })
-        .first()
-
-      if (!meal) {
-        return reply.status(404).send({
-          error: 'Meal not found',
-        })
-      }
-
-      await db('meals')
+      const rowsAffected = await db('meals')
         .where({
           id,
           user_id: userId,
@@ -131,6 +118,12 @@ export async function mealsRoutes(app: FastifyInstance) {
           meal_date_time,
           is_on_diet,
         })
+
+      if (rowsAffected === 0) {
+        return reply.status(404).send({
+          error: 'Meal not found',
+        })
+      }
 
       return reply.status(204).send()
     },
