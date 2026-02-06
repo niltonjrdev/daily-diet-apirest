@@ -15,11 +15,6 @@ describe('Meals routes', () => {
     await app.close()
   })
 
-  beforeAll(() => {
-    execSync('npm run knex migrate:rollback --all')
-    execSync('npm run knex -- migrate:latest')
-  })
-
   beforeEach(async () => {
     const response = await request(app.server)
         .post('/users')
@@ -29,8 +24,8 @@ describe('Meals routes', () => {
      userCookie = cookies?.[0]
   })
 
-      it('should allow access to protected routes with a valid user', async () => {
-    expect(userCookie).toBeDefined()
+    it('should allow access to protected routes with a valid user', async () => {
+        expect(userCookie).toBeDefined()
 
     const response = await request(app.server)
       .get('/me')
