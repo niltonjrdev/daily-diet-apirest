@@ -273,7 +273,7 @@ describe('Meals routes', () => {
     
 
     it('should not be able to update a meal from another user', async () => {
-  // cria refeição do usuário atual
+    // cria refeição do usuário atual
         await request(app.server)
             .post('/meals')
             .set('Cookie', userCookie!)
@@ -312,30 +312,30 @@ describe('Meals routes', () => {
         expect(response.status).toBe(404)
         })
 
-        it('should be able to update a meal of the authenticated user', async () => {
+    it('should be able to update a meal of the authenticated user', async () => {
             // cria refeição
-            await request(app.server)
-                .post('/meals')
-                .set('Cookie', userCookie!)
-                .send({
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
                 name: 'Dinner',
                 description: 'Salad',
                 meal_date_time: '2024-01-01 19:00:00',
                 is_on_diet: true,
-                })
+            })
 
             // obtém o id
-            const listResponse = await request(app.server)
-                .get('/meals')
-                .set('Cookie', userCookie!)
+        const listResponse = await request(app.server)
+            .get('/meals')
+            .set('Cookie', userCookie!)
 
-            const mealId = listResponse.body.meals[0].id
+        const mealId = listResponse.body.meals[0].id
 
-            // atualiza
-            const updateResponse = await request(app.server)
-                .put(`/meals/${mealId}`)
-                .set('Cookie', userCookie!)
-                .send({
+        // atualiza
+        const updateResponse = await request(app.server)
+            .put(`/meals/${mealId}`)
+            .set('Cookie', userCookie!)
+            .send({
                 name: 'Dinner Updated',
                 description: 'Salad and soup',
                 meal_date_time: '2024-01-02 20:00:00',
@@ -356,9 +356,154 @@ describe('Meals routes', () => {
                 is_on_diet: 0,
                 })
             )
+    })
+
+    it('should not be able to delete a meal without authentication', async () => {
+        const response = await request(app.server)
+            .delete('/meals/00000000-0000-0000-0000-000000000000')
+
+        expect(response.status).toBe(401)
+    })
+
+    it('should not be able to delete a meal from another user', async () => {
+        // cria refeição do usuário atual
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Lunch',
+                description: 'Chicken',
+                meal_date_time: '2024-01-01 12:00:00',
+                is_on_diet: true,
+            })
+
+        const listResponse = await request(app.server)
+            .get('/meals')
+            .set('Cookie', userCookie!)
+
+        const mealId = listResponse.body.meals[0].id
+
+        // cria outro usuário
+        const otherUserResponse = await request(app.server)
+            .post('/users')
+            .send()
+
+        const otherUserCookie = otherUserResponse.get('Set-Cookie')?.[0]
+
+        // tenta deletar com outro usuário
+        const response = await request(app.server)
+            .delete(`/meals/${mealId}`)
+            .set('Cookie', otherUserCookie!)
+
+        expect(response.status).toBe(404)
+    })
+
+    it('should be able to delete a meal of the authenticated user', async () => {
+        // cria refeição
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Dinner',
+                description: 'Salad',
+                meal_date_time: '2024-01-01 19:00:00',
+                is_on_diet: true,
+            })
+
+        const listResponse = await request(app.server)
+            .get('/meals')
+            .set('Cookie', userCookie!)
+
+        const mealId = listResponse.body.meals[0].id
+
+        // deleta
+        const deleteResponse = await request(app.server)
+            .delete(`/meals/${mealId}`)
+            .set('Cookie', userCookie!)
+
+        expect(deleteResponse.status).toBe(204)
+
+        // confirma remoção
+        const afterDeleteResponse = await request(app.server)
+            .get('/meals')
+            .set('Cookie', userCookie!)
+
+        expect(afterDeleteResponse.body.meals).toHaveLength(0)
+    })
+
+    it('should return metrics for the authenticated user', async () => {
+        // Refeição 1
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Breakfast',
+                description: 'Eggs and toast',  // ✅ ADICIONE ISSO
+                meal_date_time: '2024-01-01 08:00:00',
+                is_on_diet: true,
+            })
+        
+        // Refeição 2
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Lunch',
+                description: 'Chicken and rice',  // ✅ ADICIONE ISSO
+                meal_date_time: '2024-01-01 12:00:00',
+                is_on_diet: true,
+            })
+
+        // Refeição 3 (fora da dieta)
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Snack',
+                description: 'Chocolate bar',  // ✅ ADICIONE ISSO
+                meal_date_time: '2024-01-01 15:00:00',
+                is_on_diet: false,
+            })
+
+        // Refeição 4
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Dinner',
+                description: 'Salad',  // ✅ ADICIONE ISSO
+                meal_date_time: '2024-01-01 19:00:00',
+                is_on_diet: true,
+            })
+        
+        // Refeição 5
+        await request(app.server)
+            .post('/meals')
+            .set('Cookie', userCookie!)
+            .send({
+                name: 'Late Snack',
+                description: 'Yogurt',  // ✅ ADICIONE ISSO
+                meal_date_time: '2024-01-01 22:00:00',
+                is_on_diet: true,
+            })
+
+        const response = await request(app.server)
+            .get('/meals/metrics')
+            .set('Cookie', userCookie!)
+
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({
+            totalMeals: 5,
+            mealsOnDiet: 4,
+            mealsOffDiet: 1,
+            bestSequence: 2,
         })
+    })
 
+    it('should not be able to get metrics without authentication', async () => {
+        const response = await request(app.server)
+            .get('/meals/metrics')
+
+        expect(response.status).toBe(401)
+    })
 })
- 
-
-
