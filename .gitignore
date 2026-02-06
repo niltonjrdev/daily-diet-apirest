@@ -13,7 +13,7 @@ build/
 # Banco de Dados local (SQLite)
 db/*.sqlite
 db/*.sqlite-journal
-db/*
+db/*.db
 !db/migrations/
 
 # Logs e Cache
