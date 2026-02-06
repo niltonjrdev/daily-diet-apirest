@@ -22,11 +22,10 @@ app.setErrorHandler((error, _, reply) => {
 
 
 app.register(usersRoutes)
-
 app.register(cookie)
-
 app.register(mealsRoutes)
 
 app.get ('/health', () => {
     return "Status OK"
 })
+

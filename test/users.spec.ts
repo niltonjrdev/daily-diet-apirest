@@ -4,8 +4,10 @@ import { app } from '../src/app'
 import { execSync } from 'node:child_process'
 
 describe('Users routes', () => {
+  let userCookie: string | undefined
+
   beforeAll(async () => {
-    await app.ready()    
+    await app.ready()
   })
 
   afterAll(async () => {
@@ -15,7 +17,7 @@ describe('Users routes', () => {
   beforeEach(() => {
     execSync('npm run knex migrate:rollback --all')
     execSync('npm run knex -- migrate:latest')
-  }) 
+  })
 
   it('should be able to create a user', async () => {
     const response = await request(app.server)
@@ -27,6 +29,22 @@ describe('Users routes', () => {
     const cookies = response.get('Set-Cookie')
     expect(cookies).toBeDefined()
 
-    expect(cookies?.[0]).toContain('userId=')
+    userCookie = cookies![0]
+  })
+
+  it('should not be able to access /me without cookie', async () => {
+    const response = await request(app.server)
+      .get('/me')
+
+    expect(response.status).toBe(401)
+  })
+
+  it('should be able to access /me with cookie', async () => {
+    const response = await request(app.server)
+      .get('/me')
+      .set('Cookie', userCookie!)
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({ ok: true })
   })
 })
