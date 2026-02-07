@@ -68,7 +68,7 @@ describe('GET /meals/:id', () => {
         expect(response.status).toBe(404)
     })
 
-    it.skip('should be able to get a specific meal of the authenticated user', async () => {
+    it('should be able to get a specific meal of the authenticated user', async () => {
          await request(app.server)
             .post('/meals')
             .set('Cookie', userCookie!)
@@ -89,9 +89,9 @@ describe('GET /meals/:id', () => {
             .get(`/meals/${mealId}`)
             .set('Cookie', userCookie!)
  
-        expect(response.status).toBe(200)
-        expect(response.body.meal).toEqual(
-            expect.objectContaining({
+            expect(response.status).toBe(200)
+            expect(response.body.meal).toEqual(
+                expect.objectContaining({
                 id: mealId,
                 name: 'Dinner',
             })

@@ -58,7 +58,7 @@ describe('DELETE /meals/:id', () => {
         expect(response.status).toBe(404)
     })
 
-    it.skip('should be able to delete a meal of the authenticated user', async () => {
+    it('should be able to delete a meal of the authenticated user', async () => {
         await request(app.server)
             .post('/meals')
             .set('Cookie', userCookie!)
