@@ -20,9 +20,8 @@ app.setErrorHandler((error, _, reply) => {
   })
 })
 
-
-app.register(usersRoutes)
 app.register(cookie)
+app.register(usersRoutes)
 app.register(mealsRoutes)
 
 app.get ('/health', () => {
