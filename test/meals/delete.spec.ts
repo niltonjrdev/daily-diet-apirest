@@ -1,91 +1,92 @@
-import { beforeEach, beforeAll, afterAll, describe, it, expect } from 'vitest'
+import { beforeEach, beforeAll, describe, it, expect } from 'vitest'
 import request from 'supertest'
 import { app } from '../../src/app'
 
-describe('DELETE /meals/:id', () => {
-  let userCookie: string | undefined
+describe('DELETE /meals/:id', () => {  
+  let userCookie: string | undefined 
 
   beforeAll(async () => {
     await app.ready()
   })
 
-  afterAll(async () => {
-    await app.close()
-  })
-
   beforeEach(async () => {
     const response = await request(app.server)
       .post('/users')
-      .send()
+      .send({})
 
-    userCookie = response.get('Set-Cookie')?.[0]
+    const cookies = response.get('Set-Cookie')
+
+    if (!cookies?.[0]) {
+        throw new Error('Authentication cookie not set')
+    }
+
+    userCookie = cookies[0]
   })
 
-    it('should not be able to delete a meal without authentication', async () => {
-        const response = await request(app.server)
-            .delete('/meals/00000000-0000-0000-0000-000000000000')
-  
-        expect(response.status).toBe(401)
-    })
+  it('should not be able to delete a meal without authentication', async () => {
+    const response = await request(app.server)
+      .delete('/meals/00000000-0000-0000-0000-000000000000')
 
-    it('should not be able to delete a meal from another user', async () => {
-        await request(app.server)
-            .post('/meals')
-            .set('Cookie', userCookie!)
-            .send({
-               name: 'Lunch',
-               description: 'Chicken',
-               meal_date_time: '2024-01-01 12:00:00',
-               is_on_diet: true,
-            })
- 
-        const listResponse = await request(app.server)
-            .get('/meals')
-            .set('Cookie', userCookie!)
- 
-        const mealId = listResponse.body.meals[0].id
- 
-        const otherUserResponse = await request(app.server)
-            .post('/users')
-            .send()
- 
-        const otherUserCookie = otherUserResponse.get('Set-Cookie')?.[0]
- 
-        const response = await request(app.server)
-            .delete(`/meals/${mealId}`)
-            .set('Cookie', otherUserCookie!)
- 
-        expect(response.status).toBe(404)
-    })
+    expect(response.status).toBe(401)
+  })
 
-    it('should be able to delete a meal of the authenticated user', async () => {
-        await request(app.server)
-            .post('/meals')
-            .set('Cookie', userCookie!)
-            .send({
-                name: 'Dinner',
-                description: 'Salad',
-                meal_date_time: '2024-01-01 19:00:00',
-                is_on_diet: true,
-            })
-    
-        const listResponse = await request(app.server)
-            .get('/meals')
-            .set('Cookie', userCookie!)
-    
-        const mealId = listResponse.body.meals[0].id
-    
-        const deleteResponse = await request(app.server)
-            .delete(`/meals/${mealId}`)
-            .set('Cookie', userCookie!)
-    
-        expect(deleteResponse.status).toBe(204)
-    
-        const afterDeleteResponse = await request(app.server)
-            .get('/meals')
-            .set('Cookie', userCookie!)
-    
-        expect(afterDeleteResponse.body.meals).toHaveLength(0)
-    })   
+  it('should not be able to delete a meal from another user', async () => {
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userCookie!)
+      .send({
+        name: 'Lunch',
+        description: 'Chicken',
+        meal_date_time: '2024-01-01 12:00:00',
+        is_on_diet: true,
+      })
 
+    const listResponse = await request(app.server)
+      .get('/meals')
+      .set('Cookie', userCookie!)
+
+    const mealId = listResponse.body.meals[0].id
+
+    const otherUserResponse = await request(app.server)
+      .post('/users')
+      .send({})
+
+    const otherUserCookie = otherUserResponse.get('Set-Cookie')?.[0]
+
+    const response = await request(app.server)
+      .delete(`/meals/${mealId}`)
+      .set('Cookie', otherUserCookie!)
+
+    expect(response.status).toBe(404)
+  })
+
+  it('should be able to delete a meal of the authenticated user', async () => {
+    await request(app.server)
+      .post('/meals')
+      .set('Cookie', userCookie!)
+      .send({
+        name: 'Dinner',
+        description: 'Salad',
+        meal_date_time: '2024-01-01 19:00:00',
+        is_on_diet: true,
+      })
+
+    const listResponse = await request(app.server)
+      .get('/meals')
+      .set('Cookie', userCookie!)
+
+    const mealId = listResponse.body.meals[0].id
+
+    const deleteResponse = await request(app.server)
+      .delete(`/meals/${mealId}`)
+      .set('Cookie', userCookie!)
+
+    expect(deleteResponse.status).toBe(204)
+
+    const afterDeleteResponse = await request(app.server)
+      .get('/meals')
+      .set('Cookie', userCookie!)
+
+    expect(afterDeleteResponse.body.meals).toHaveLength(0)
+  })
 })

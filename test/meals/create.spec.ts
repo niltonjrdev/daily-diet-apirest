@@ -9,14 +9,10 @@ describe('POST /meals', () => {
     await app.ready()
   })
 
-  afterAll(async () => {
-    await app.close()
-  })
-
   beforeEach(async () => {
     const response = await request(app.server)
       .post('/users')
-      .send()
+      .send({})
 
     userCookie = response.get('Set-Cookie')?.[0]
   })

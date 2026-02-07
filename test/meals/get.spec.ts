@@ -1,4 +1,4 @@
-import { beforeEach, beforeAll, afterAll, describe, it, expect } from 'vitest'
+import { beforeEach, beforeAll, describe, it, expect } from 'vitest'
 import request from 'supertest'
 import { app } from '../../src/app'
 
@@ -9,16 +9,19 @@ describe('GET /meals/:id', () => {
     await app.ready()
   })
 
-  afterAll(async () => {
-    await app.close()
-  })
-
   beforeEach(async () => {
     const response = await request(app.server)
-      .post('/users')
-      .send()
+        .post('/users')
+        .send({})
 
-    userCookie = response.get('Set-Cookie')?.[0]
+    const cookies = response.get('Set-Cookie')
+    
+    if (!cookies?.[0]) {
+        throw new Error('Authentication cookie not set')
+    }
+    
+    userCookie = cookies[0]      
+
   })
 
     it('should not be able to get a meal without authentication', async () => {
@@ -57,7 +60,7 @@ describe('GET /meals/:id', () => {
     
         const otherUserResponse = await request(app.server)
             .post('/users')
-            .send()
+            .send({})
     
         const otherUserCookie = otherUserResponse.get('Set-Cookie')?.[0]
     

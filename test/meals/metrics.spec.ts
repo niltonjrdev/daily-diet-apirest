@@ -9,16 +9,19 @@ describe('GET /meals', () => {
     await app.ready()
   })
 
-  afterAll(async () => {
-    await app.close()
-  })
+    beforeEach(async () => {
+        const response = await request(app.server)
+           .post('/users')
+           .send({})
+           
+        const cookies = response.get('Set-Cookie')
+    
+        if (!cookies?.[0]) {
+            throw new Error('Authentication cookie not set')
+        }
+    
+    userCookie = cookies[0]
 
-  beforeEach(async () => {
-    const response = await request(app.server)
-      .post('/users')
-      .send()
-
-    userCookie = response.get('Set-Cookie')?.[0]
     })
 
     it('should not be able to get metrics without authentication', async () => {
