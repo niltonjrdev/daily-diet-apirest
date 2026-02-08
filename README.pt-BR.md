@@ -198,18 +198,17 @@ Cookie: userId=...
 db/
 └── migrations/      # Migrations do banco de dados
 
-env/
-└── index.ts         # Variáveis de ambiente
-
 src/
-├── middlewares/     # Middlewares personalizados
+├── env/
+│   └── index.ts         # Environment variables
+├── middlewares/     # Custom middlewares
 │   └── check-user-id.ts
-├── routes/          # Rotas da aplicação
+├── routes/          # Application routes
 │   ├── meals.ts
 │   └── users.ts
-├── app.ts           # Configuração do Fastify
-├── database.ts      # Configuração do banco de dados
-└── server.ts        # Inicialização do servidor
+├── app.ts           # Fastify configuration
+├── database.ts      # Database configuration
+└── server.ts        # Server initialization
 
 test/
 ├── meals/           # Testes de refeições

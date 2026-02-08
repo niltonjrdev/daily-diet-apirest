@@ -200,10 +200,9 @@ Cookie: userId=...
 db/
 └── migrations/      # Database migrations
 
-env/
-└── index.ts         # Environment variables
-
 src/
+├── env/
+│   └── index.ts         # Environment variables
 ├── middlewares/     # Custom middlewares
 │   └── check-user-id.ts
 ├── routes/          # Application routes

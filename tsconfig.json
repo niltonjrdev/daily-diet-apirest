@@ -44,6 +44,6 @@
     "esModuleInterop": true
   },
 
-  "include": ["src", "env"],
+  "include": ["src", "src/env"],
   "exclude": ["node_modules", "test"]
 }
