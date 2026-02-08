@@ -4,7 +4,7 @@
 
 API REST para controle de dieta diária, permitindo o gerenciamento completo de refeições e acompanhamento de métricas nutricionais.
 
-> 🚀 **[Ver demonstração ao vivo](https://seu-projeto.onrender.com)** _(adicione o link após deploy)_
+> 🚀 **[Ver demonstração ao vivo](https://daily-diet-apirest.onrender.com/)**
 
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
@@ -42,6 +42,7 @@ Desenvolvido como desafio do módulo de **Node.js** da [Rocketseat](https://www.
 
 - **[Knex.js](http://knexjs.org/)** - Query builder SQL
 - **[SQLite](https://www.sqlite.org/)** - Banco de dados (desenvolvimento)
+- **[PostgreSQL](https://www.postgresql.org//)** - Banco de dados (produção)
 
 ### Validação & Testes
 
@@ -306,5 +307,5 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ---
 
 <p align="center">
-  Feito com ❤️ durante o módulo Node.js da Rocketseat
+  Projeto desenvolvido durante o módulo Node.js da Rocketseat
 </p>

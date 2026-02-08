@@ -4,7 +4,7 @@
 
 RESTful API for daily diet tracking, enabling complete meal management and nutritional metrics monitoring.
 
-> 🚀 **[Live Demo](https://your-project.onrender.com)** _(add link after deployment)_
+> 🚀 **[Live Demo](https://daily-diet-apirest.onrender.com/)**
 
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
@@ -44,6 +44,7 @@ Developed as a challenge for the **Node.js** module by [Rocketseat](https://www.
 
 - **[Knex.js](http://knexjs.org/)** - SQL query builder
 - **[SQLite](https://www.sqlite.org/)** - Database (development)
+- **[PostgreSQL](https://www.postgresql.org//)** - Database (production)
 
 ### Validation & Testing
 
@@ -308,5 +309,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 <p align="center">
-  Made with ❤️ during Rocketseat's Node.js module
+  Project developed during Rocketseat's Node.js module from Rocketseat
 </p>
