@@ -1,9 +1,10 @@
-import {app} from './app'
-import { env } from './env/index';
+import { app } from './app'
 
-app.
-listen ({ port: env.PORT 
-})
-.then (() =>{
-    console.log(`🚀 Server running on port ${env.PORT}`)
+const port = Number(process.env.PORT) || 3333
+
+app.listen({
+  port,
+  host: '0.0.0.0',
+}).then(() => {
+  console.log(`🚀 Server running on port ${port}`)
 })
