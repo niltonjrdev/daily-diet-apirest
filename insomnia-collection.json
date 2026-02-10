@@ -1,0 +1,291 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-02-09T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_0",
+      "parentId": "fld_auth",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/users",
+      "name": "Create User",
+      "description": "Register a new user in the system",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1707436800000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1",
+      "parentId": "fld_auth",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/sessions",
+      "name": "Login (Get Session)",
+      "description": "Authenticate user and get session ID cookie",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"john@example.com\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1707436799000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_2",
+      "parentId": "fld_meals",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/meals",
+      "name": "Create Meal",
+      "description": "Register a new meal for the authenticated user",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Breakfast - Scrambled eggs\",\n  \"description\": \"2 eggs with whole wheat bread and avocado\",\n  \"date\": \"2026-02-09\",\n  \"time\": \"08:30\",\n  \"isOnDiet\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1707436798000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_3",
+      "parentId": "fld_meals",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/meals",
+      "name": "List All Meals",
+      "description": "Get all meals for the authenticated user",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1707436797000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4",
+      "parentId": "fld_meals",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/meals/{{ _.meal_id }}",
+      "name": "Get Single Meal",
+      "description": "Get details of a specific meal by ID",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1707436796000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_5",
+      "parentId": "fld_meals",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/meals/{{ _.meal_id }}",
+      "name": "Update Meal",
+      "description": "Update an existing meal",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Breakfast - Updated\",\n  \"description\": \"3 eggs with sweet potato\",\n  \"date\": \"2026-02-09\",\n  \"time\": \"09:00\",\n  \"isOnDiet\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1707436795000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_6",
+      "parentId": "fld_meals",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/meals/{{ _.meal_id }}",
+      "name": "Delete Meal",
+      "description": "Delete a specific meal",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1707436794000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_7",
+      "parentId": "fld_metrics",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "url": "{{ _.base_url }}/meals/metrics",
+      "name": "Get User Metrics",
+      "description": "Get diet statistics and metrics for the authenticated user",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1707436793000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_1",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "name": "Authentication",
+      "description": "User registration and authentication endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707436800000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_meals",
+      "parentId": "wrk_1",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "name": "Meals",
+      "description": "CRUD operations for meals management",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707436799000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_metrics",
+      "parentId": "wrk_1",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "name": "Metrics",
+      "description": "User diet statistics and metrics",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1707436798000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_1",
+      "parentId": null,
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "name": "Daily Diet API",
+      "description": "Complete API documentation for Daily Diet - Meal tracking application",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_1",
+      "parentId": "wrk_1",
+      "modified": 1707436800000,
+      "created": 1707436800000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3333",
+        "meal_id": "example-meal-id-uuid"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "meal_id"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1707436800000,
+      "_type": "environment"
+    }
+  ]
+}

@@ -58,6 +58,226 @@ Developed as a challenge for the **Node.js** module by [Rocketseat](https://www.
 
 ---
 
+# 🧪 Testing the API
+
+The API can be tested in three ways: importing ready-made collections, using curl, or manually with any HTTP client.
+
+## 📦 Import Collection (Recommended)
+
+### Insomnia
+
+1. Download [**Insomnia**](https://insomnia.rest/download)
+2. Download the collection file:
+   - **📥 [Download insomnia-collection.json](./insomnia-collection.json)** (right-click → Save as)
+3. Import in Insomnia:
+   - `Application` → `Import/Export` → `Import Data`
+   - Select `From File`
+   - Choose the downloaded file
+   - Click `Scan` then `Import`
+4. Select the `Base Environment`
+5. Test the endpoints!
+
+### Thunder Client (VS Code)
+
+1. Install the [**Thunder Client**](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) extension
+2. Download the collection file:
+   - **📥 [Download thunder-collection.json](./thunder-collection.json)** (right-click → Save as)
+3. Import the collection:
+   - Click the Thunder Client icon (⚡)
+   - `Collections` → `...` → `Import`
+   - Select `thunder-collection.json`
+4. Download the environments file:
+   - **📥 [Download thunder-environment.json](./thunder-environment.json)** (right-click → Save as)
+5. Import the environments:
+   - `Env` → `...` → `Import`
+   - Select `thunder-environment.json`
+6. Choose the `Local Development` or `Production` environment
+
+---
+
+## 🔄 Recommended Test Flow
+
+1. **Create user**
+   - Request: `POST Create User`
+   - Body: `{ "name": "John Doe", "email": "john@example.com" }`
+
+2. **Login (Get Session)**
+   - Request: `POST Login (Get Session)`
+   - Body: `{ "email": "john@example.com" }`
+   - The `sessionId` cookie is automatically saved
+
+3. **Create meal**
+   - Request: `POST Create Meal`
+   - Uses the `sessionId` from the session
+   - Copy the returned `id` for the next tests
+
+4. **List all meals**
+   - Request: `GET List All Meals`
+   - Returns all meals for your session
+
+5. **Get specific meal**
+   - Paste the meal `id` in the `meal_id` environment variable
+   - Request: `GET Get Single Meal`
+
+6. **Update meal**
+   - Request: `PUT Update Meal`
+   - Modify the meal data
+
+7. **View user metrics**
+   - Request: `GET Get User Metrics`
+   - Returns diet statistics (total meals, on diet, best sequence)
+
+8. **Delete meal**
+   - Request: `DELETE Delete Meal`
+
+---
+
+## 💻 Test with cURL
+
+### Create user:
+```bash
+curl -X POST http://localhost:3333/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com"
+  }'
+```
+
+### Login (Get Session):
+```bash
+curl -X POST http://localhost:3333/sessions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com"
+  }' \
+  -c cookies.txt
+```
+
+### Create meal:
+```bash
+curl -X POST http://localhost:3333/meals \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "name": "Breakfast - Scrambled eggs",
+    "description": "2 eggs with whole wheat bread and avocado",
+    "date": "2026-02-09",
+    "time": "08:30",
+    "isOnDiet": true
+  }'
+```
+
+### List meals:
+```bash
+curl -X GET http://localhost:3333/meals \
+  -b cookies.txt
+```
+
+### Get specific meal:
+```bash
+curl -X GET http://localhost:3333/meals/{MEAL_ID} \
+  -b cookies.txt
+```
+
+### Update meal:
+```bash
+curl -X PUT http://localhost:3333/meals/{MEAL_ID} \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "name": "Breakfast - Updated",
+    "description": "3 eggs with sweet potato",
+    "date": "2026-02-09",
+    "time": "09:00",
+    "isOnDiet": true
+  }'
+```
+
+### Get user metrics:
+```bash
+curl -X GET http://localhost:3333/meals/metrics \
+  -b cookies.txt
+```
+
+### Delete meal:
+```bash
+curl -X DELETE http://localhost:3333/meals/{MEAL_ID} \
+  -b cookies.txt
+```
+
+**Note:** `-c cookies.txt` saves cookies and `-b cookies.txt` sends them in requests.
+
+---
+
+## 📋 Available Endpoints
+
+| Method | Endpoint | Description | Requires Cookie |
+|--------|----------|-------------|----------------|
+| POST | `/users` | Create user | No |
+| POST | `/sessions` | Login (get session) | No |
+| POST | `/meals` | Create meal | Yes |
+| GET | `/meals` | List all meals | Yes |
+| GET | `/meals/:id` | Get specific meal | Yes |
+| PUT | `/meals/:id` | Update meal | Yes |
+| DELETE | `/meals/:id` | Delete meal | Yes |
+| GET | `/meals/metrics` | Get user metrics | Yes |
+
+### POST `/users` Body:
+```json
+{
+  "name": "User name",
+  "email": "user@example.com"
+}
+```
+
+### POST `/sessions` Body:
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+### POST/PUT `/meals` Body:
+```json
+{
+  "name": "Meal name",
+  "description": "Meal description",
+  "date": "2026-02-09",
+  "time": "08:30",
+  "isOnDiet": true
+}
+```
+
+---
+
+## ⚠️ Important Notes
+
+- **Sessions:** Each user has their own `sessionId` via cookie
+- **Isolation:** You only see meals from your session
+- **Authentication:** Most routes require authentication (sessionId cookie)
+- **Date format:** `YYYY-MM-DD` (e.g., "2026-02-09")
+- **Time format:** `HH:MM` (e.g., "08:30")
+- **isOnDiet:** Boolean value (`true` or `false`)
+
+---
+
+## 🐛 Common Issues
+
+### 401 Unauthorized Error:
+- **Cause:** You didn't send the cookie on authenticated routes
+- **Solution:** Login first (POST `/sessions`) to receive the sessionId cookie
+
+### 404 Not Found Error:
+- **Cause:** The meal ID doesn't exist or doesn't belong to your session
+- **Solution:** Check the ID by listing meals (GET `/meals`)
+
+### Validation Error:
+- **Cause:** Missing or invalid fields in request body
+- **Solution:** Check the required fields and formats in the endpoint documentation above
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites

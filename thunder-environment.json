@@ -1,0 +1,42 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Daily Diet API",
+  "dateExported": "2026-02-09T00:00:00.000Z",
+  "version": "1.1",
+  "environments": [
+    {
+      "name": "Local Development",
+      "default": true,
+      "sortNum": 10000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "data": [
+        {
+          "name": "base_url",
+          "value": "http://localhost:3333"
+        },
+        {
+          "name": "meal_id",
+          "value": "example-meal-id-uuid"
+        }
+      ]
+    },
+    {
+      "name": "Production",
+      "default": false,
+      "sortNum": 20000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "data": [
+        {
+          "name": "base_url",
+          "value": "https://your-production-url.com"
+        },
+        {
+          "name": "meal_id",
+          "value": "example-meal-id-uuid"
+        }
+      ]
+    }
+  ]
+}

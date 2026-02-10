@@ -1,0 +1,176 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Daily Diet API",
+  "collectionId": "daily-diet-api",
+  "dateExported": "2026-02-09T00:00:00.000Z",
+  "version": "1.2",
+  "folders": [
+    {
+      "id": "auth-folder",
+      "name": "Authentication",
+      "containerId": "",
+      "created": "2026-02-09T00:00:00.000Z",
+      "sortNum": 10000
+    },
+    {
+      "id": "meals-folder",
+      "name": "Meals",
+      "containerId": "",
+      "created": "2026-02-09T00:00:00.000Z",
+      "sortNum": 20000
+    },
+    {
+      "id": "metrics-folder",
+      "name": "Metrics",
+      "containerId": "",
+      "created": "2026-02-09T00:00:00.000Z",
+      "sortNum": 30000
+    }
+  ],
+  "requests": [
+    {
+      "id": "req-create-user",
+      "colId": "daily-diet-api",
+      "containerId": "auth-folder",
+      "name": "Create User",
+      "url": "{{base_url}}/users",
+      "method": "POST",
+      "sortNum": 10000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\"\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "id": "req-login",
+      "colId": "daily-diet-api",
+      "containerId": "auth-folder",
+      "name": "Login (Get Session)",
+      "url": "{{base_url}}/sessions",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"john@example.com\"\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "id": "req-create-meal",
+      "colId": "daily-diet-api",
+      "containerId": "meals-folder",
+      "name": "Create Meal",
+      "url": "{{base_url}}/meals",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Breakfast - Scrambled eggs\",\n  \"description\": \"2 eggs with whole wheat bread and avocado\",\n  \"date\": \"2026-02-09\",\n  \"time\": \"08:30\",\n  \"isOnDiet\": true\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "id": "req-list-meals",
+      "colId": "daily-diet-api",
+      "containerId": "meals-folder",
+      "name": "List All Meals",
+      "url": "{{base_url}}/meals",
+      "method": "GET",
+      "sortNum": 40000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [],
+      "tests": []
+    },
+    {
+      "id": "req-get-meal",
+      "colId": "daily-diet-api",
+      "containerId": "meals-folder",
+      "name": "Get Single Meal",
+      "url": "{{base_url}}/meals/{{meal_id}}",
+      "method": "GET",
+      "sortNum": 50000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [],
+      "tests": []
+    },
+    {
+      "id": "req-update-meal",
+      "colId": "daily-diet-api",
+      "containerId": "meals-folder",
+      "name": "Update Meal",
+      "url": "{{base_url}}/meals/{{meal_id}}",
+      "method": "PUT",
+      "sortNum": 60000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Breakfast - Updated\",\n  \"description\": \"3 eggs with sweet potato\",\n  \"date\": \"2026-02-09\",\n  \"time\": \"09:00\",\n  \"isOnDiet\": true\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "id": "req-delete-meal",
+      "colId": "daily-diet-api",
+      "containerId": "meals-folder",
+      "name": "Delete Meal",
+      "url": "{{base_url}}/meals/{{meal_id}}",
+      "method": "DELETE",
+      "sortNum": 70000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [],
+      "tests": []
+    },
+    {
+      "id": "req-metrics",
+      "colId": "daily-diet-api",
+      "containerId": "metrics-folder",
+      "name": "Get User Metrics",
+      "url": "{{base_url}}/meals/metrics",
+      "method": "GET",
+      "sortNum": 80000,
+      "created": "2026-02-09T00:00:00.000Z",
+      "modified": "2026-02-09T00:00:00.000Z",
+      "headers": [],
+      "tests": []
+    }
+  ]
+}

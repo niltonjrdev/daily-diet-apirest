@@ -56,6 +56,226 @@ Desenvolvido como desafio do módulo de **Node.js** da [Rocketseat](https://www.
 
 ---
 
+# 🧪 Testando a API
+
+A API pode ser testada de três formas: importando coleções prontas, usando curl, ou manualmente com qualquer cliente HTTP.
+
+## 📦 Importar Coleção (Recomendado)
+
+### Insomnia
+
+1. Baixe o [**Insomnia**](https://insomnia.rest/download)
+2. Baixe o arquivo da coleção:
+   - **📥 [Download insomnia-collection.json](./insomnia-collection.json)** (clique com botão direito → Salvar como)
+3. Importe no Insomnia:
+   - `Application` → `Import/Export` → `Import Data`
+   - Selecione `From File`
+   - Escolha o arquivo baixado
+   - Clique em `Scan` e depois `Import`
+4. Selecione o ambiente `Base Environment`
+5. Teste os endpoints!
+
+### Thunder Client (VS Code)
+
+1. Instale a extensão [**Thunder Client**](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client)
+2. Baixe o arquivo da coleção:
+   - **📥 [Download thunder-collection.json](./thunder-collection.json)** (clique com botão direito → Salvar como)
+3. Importe a coleção:
+   - Clique no ícone do Thunder Client (⚡)
+   - `Collections` → `...` → `Import`
+   - Selecione `thunder-collection.json`
+4. Baixe o arquivo de ambientes:
+   - **📥 [Download thunder-environment.json](./thunder-environment.json)** (clique com botão direito → Salvar como)
+5. Importe os ambientes:
+   - `Env` → `...` → `Import`
+   - Selecione `thunder-environment.json`
+6. Escolha o ambiente `Local Development` ou `Production`
+
+---
+
+## 🔄 Fluxo de Teste Recomendado
+
+1. **Criar usuário**
+   - Requisição: `POST Create User`
+   - Body: `{ "name": "João Silva", "email": "joao@example.com" }`
+
+2. **Fazer login (Obter sessão)**
+   - Requisição: `POST Login (Get Session)`
+   - Body: `{ "email": "joao@example.com" }`
+   - O cookie `sessionId` é automaticamente salvo
+
+3. **Criar refeição**
+   - Requisição: `POST Create Meal`
+   - Usa o `sessionId` da sessão
+   - Copie o `id` retornado para os próximos testes
+
+4. **Listar todas as refeições**
+   - Requisição: `GET List All Meals`
+   - Retorna todas as refeições da sua sessão
+
+5. **Obter refeição específica**
+   - Cole o `id` da refeição na variável de ambiente `meal_id`
+   - Requisição: `GET Get Single Meal`
+
+6. **Atualizar refeição**
+   - Requisição: `PUT Update Meal`
+   - Modifique os dados da refeição
+
+7. **Ver métricas do usuário**
+   - Requisição: `GET Get User Metrics`
+   - Retorna estatísticas da dieta (total de refeições, dentro da dieta, melhor sequência)
+
+8. **Deletar refeição**
+   - Requisição: `DELETE Delete Meal`
+
+---
+
+## 💻 Testar com cURL
+
+### Criar usuário:
+```bash
+curl -X POST http://localhost:3333/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "João Silva",
+    "email": "joao@example.com"
+  }'
+```
+
+### Login (Obter sessão):
+```bash
+curl -X POST http://localhost:3333/sessions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "joao@example.com"
+  }' \
+  -c cookies.txt
+```
+
+### Criar refeição:
+```bash
+curl -X POST http://localhost:3333/meals \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "name": "Café da manhã - Ovos mexidos",
+    "description": "2 ovos com pão integral e abacate",
+    "date": "2026-02-09",
+    "time": "08:30",
+    "isOnDiet": true
+  }'
+```
+
+### Listar refeições:
+```bash
+curl -X GET http://localhost:3333/meals \
+  -b cookies.txt
+```
+
+### Obter refeição específica:
+```bash
+curl -X GET http://localhost:3333/meals/{MEAL_ID} \
+  -b cookies.txt
+```
+
+### Atualizar refeição:
+```bash
+curl -X PUT http://localhost:3333/meals/{MEAL_ID} \
+  -H "Content-Type: application/json" \
+  -b cookies.txt \
+  -d '{
+    "name": "Café da manhã - Atualizado",
+    "description": "3 ovos com batata doce",
+    "date": "2026-02-09",
+    "time": "09:00",
+    "isOnDiet": true
+  }'
+```
+
+### Obter métricas do usuário:
+```bash
+curl -X GET http://localhost:3333/meals/metrics \
+  -b cookies.txt
+```
+
+### Deletar refeição:
+```bash
+curl -X DELETE http://localhost:3333/meals/{MEAL_ID} \
+  -b cookies.txt
+```
+
+**Nota:** `-c cookies.txt` salva os cookies e `-b cookies.txt` os envia nas requisições.
+
+---
+
+## 📋 Endpoints Disponíveis
+
+| Método | Endpoint | Descrição | Requer Cookie |
+|--------|----------|-----------|---------------|
+| POST | `/users` | Criar usuário | Não |
+| POST | `/sessions` | Login (obter sessão) | Não |
+| POST | `/meals` | Criar refeição | Sim |
+| GET | `/meals` | Listar todas as refeições | Sim |
+| GET | `/meals/:id` | Obter refeição específica | Sim |
+| PUT | `/meals/:id` | Atualizar refeição | Sim |
+| DELETE | `/meals/:id` | Deletar refeição | Sim |
+| GET | `/meals/metrics` | Obter métricas do usuário | Sim |
+
+### Body do POST `/users`:
+```json
+{
+  "name": "Nome do usuário",
+  "email": "usuario@example.com"
+}
+```
+
+### Body do POST `/sessions`:
+```json
+{
+  "email": "usuario@example.com"
+}
+```
+
+### Body do POST/PUT `/meals`:
+```json
+{
+  "name": "Nome da refeição",
+  "description": "Descrição da refeição",
+  "date": "2026-02-09",
+  "time": "08:30",
+  "isOnDiet": true
+}
+```
+
+---
+
+## ⚠️ Notas Importantes
+
+- **Sessões:** Cada usuário tem seu próprio `sessionId` via cookie
+- **Isolamento:** Você só vê refeições da sua sessão
+- **Autenticação:** A maioria das rotas requer autenticação (cookie sessionId)
+- **Formato de data:** `AAAA-MM-DD` (ex: "2026-02-09")
+- **Formato de hora:** `HH:MM` (ex: "08:30")
+- **isOnDiet:** Valor booleano (`true` ou `false`)
+
+---
+
+## 🐛 Problemas Comuns
+
+### Erro 401 Unauthorized:
+- **Causa:** Você não enviou o cookie nas rotas autenticadas
+- **Solução:** Faça login primeiro (POST `/sessions`) para receber o cookie sessionId
+
+### Erro 404 Not Found:
+- **Causa:** O ID da refeição não existe ou não pertence à sua sessão
+- **Solução:** Verifique o ID listando as refeições (GET `/meals`)
+
+### Erro de Validação:
+- **Causa:** Campos ausentes ou inválidos no body da requisição
+- **Solução:** Verifique os campos obrigatórios e formatos na documentação dos endpoints acima
+
+---
+
 ## 🚀 Como Executar
 
 ### Pré-requisitos
