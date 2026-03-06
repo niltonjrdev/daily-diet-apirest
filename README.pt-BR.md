@@ -14,7 +14,7 @@ API REST para controle de dieta diária, permitindo o gerenciamento completo de 
 
 ## 📋 Sobre o Projeto
 
-Desenvolvido como desafio do módulo de **Node.js** da [Rocketseat](https://www.rocketseat.com.br/), este projeto implementa uma API completa para controle de dieta com identificação de usuários via cookies, validação de dados e testes automatizados.
+API completa para acompanhamento de dieta com identificação de usuários via cookie, validação de dados e testes automatizados.
 
 ### ✨ Funcionalidades
 
@@ -516,16 +516,3 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nilton-junior-5915a2238/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/niltonjr-dev)
-
----
-
-## 🙏 Agradecimentos
-
-- [Rocketseat](https://www.rocketseat.com.br/) pelo desafio
-- Comunidade Node.js
-
----
-
-<p align="center">
-  Projeto desenvolvido durante o módulo Node.js da Rocketseat
-</p>

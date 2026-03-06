@@ -16,7 +16,7 @@ RESTful API for daily diet tracking, enabling complete meal management and nutri
 
 ## 📋 About
 
-Developed as a challenge for the **Node.js** module by [Rocketseat](https://www.rocketseat.com.br/), this project implements a complete diet tracking API with cookie-based user identification, data validation, and automated testing.
+A complete diet tracking API with cookie-based user identification, data validation, and automated testing.
 
 ### ✨ Features
 
@@ -518,16 +518,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/nilton-junior-5915a2238/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/niltonjr-dev)
-
----
-
-## 🙏 Acknowledgments
-
-- [Rocketseat](https://www.rocketseat.com.br/) for the challenge
-- Node.js community
-
----
-
-<p align="center">
-  Project developed during Rocketseat's Node.js module from Rocketseat
-</p>
